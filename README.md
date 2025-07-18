@@ -2,11 +2,11 @@
 
 ## Chagas Diagnosis：PhysioNet Challenge 2025
 
-------
+
 
 ### Introduction
 
-------
+
 
 This project was developed for the **PhysioNet Challenge 2025**.
 
@@ -14,7 +14,7 @@ This repository contains the full pipeline for data preprocessing, model trainin
 
 ### Dataset
 
-------
+
 
 We use the **SaMi-Trop** and **PTB-XL** datasets from the **PhysioNet/CinC Challenge 2025**.
 
@@ -23,7 +23,7 @@ We use the **SaMi-Trop** and **PTB-XL** datasets from the **PhysioNet/CinC Chall
 
 ### Usage
 
-------
+
 
 To run this project, follow the steps below:
 
@@ -84,7 +84,7 @@ python evaluate_model.py \
 
 ### Result
 
-------
+
 
 On our internal test set, we achieved the following performance:
 

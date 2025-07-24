@@ -2,7 +2,7 @@ import os
 import argparse
 from pathlib import Path
 from typing import List, Tuple
-from test_dataset import TestDataset
+from ecg_dataset import ECGDataset
 from tqdm import tqdm
 from utils import find_optimal_threshold
 
@@ -27,7 +27,7 @@ def parse_args():
     return parser.parse_args()
 
 def build_dataloader(data_dir, batch_size=64):
-    dataset = TestDataset(data_dir)
+    dataset = ECGDataset(data_dir)
     return DataLoader(
         dataset,
         batch_size=batch_size,

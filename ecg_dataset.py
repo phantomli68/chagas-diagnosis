@@ -9,9 +9,9 @@ from scipy.signal import resample
 def sg_denoise(ecg, window=13, poly=2):
     return savgol_filter(ecg, window_length=window, polyorder=poly, axis=0)
 
-class TestDataset(Dataset):
+class ECGDataset(Dataset):
     def __init__(self, data_dir, transform=None):
-        super(TestDataset, self).__init__()
+        super(ECGDataset, self).__init__()
         self.data_dir = data_dir
         self.transform = transform
 

@@ -50,7 +50,7 @@ def train_model(data_folder, model_folder, verbose):
     if verbose:
         print(f"Using device: {device}")
 
-    check_all_sources(data_folder)
+    # check_all_sources(data_folder)
 
     # The data_folder contains all the processed .hea and .dat files from the PTB-XL and SaMi-Trop datasets.
 
@@ -202,18 +202,18 @@ def save_model(model_folder, model):
 def sg_denoise(ecg_data, window_length, polyorder):
     return savgol_filter(ecg_data, window_length=window_length, polyorder=polyorder, axis=0)
 
-def check_all_sources(data_folder):
-    invalid_records = []
-    for filename in os.listdir(data_folder):
-        if filename.endswith('.hea'):
-            record_path = os.path.join(data_folder, filename[:-4])  # remove .hea extension
-            source = extract_source(record_path)
-            if source not in ["PTB-XL", "SaMi-Trop"]:
-                invalid_records.append((record_path, source))
-
-    if invalid_records:
-        print("The following records are not from PTB-XL or SaMi-Trop:")
-        for path, src in invalid_records:
-            print(f"  - {path} -> {src}")
-    else:
-        print("✅ All records are from PTB-XL or SaMi-Trop.")
+# def check_all_sources(data_folder):
+#     invalid_records = []
+#     for filename in os.listdir(data_folder):
+#         if filename.endswith('.hea'):
+#             record_path = os.path.join(data_folder, filename[:-4])  # remove .hea extension
+#             source = extract_source(record_path)
+#             if source not in ["PTB-XL", "SaMi-Trop"]:
+#                 invalid_records.append((record_path, source))
+# 
+#     if invalid_records:
+#         print("The following records are not from PTB-XL or SaMi-Trop:")
+#         for path, src in invalid_records:
+#             print(f"  - {path} -> {src}")
+#     else:
+#         print("✅ All records are from PTB-XL or SaMi-Trop.")

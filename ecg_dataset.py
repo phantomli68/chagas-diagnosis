@@ -15,22 +15,27 @@ class ECGDataset(Dataset):
         self.data_dir = data_dir
         self.transform = transform
 
-        self.leads = ['I', 'II', 'III', 'aVR', 'aVL', 'aVF', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6']
+        self.leads = ['I', 'II', 'III', 'aVR', 'aVL', 'aVF',
+                      'V1', 'V2', 'V3', 'V4', 'V5', 'V6']
         self.use_leads = np.where(np.in1d(self.leads, self.leads))[0]
         self.nleads = len(self.use_leads)
 
-        target_folders = ["PTB-XL", "SaMi-Trop"]
         self.patient_ids = []
 
-        for folder in target_folders:
-            folder_path = os.path.join(data_dir, folder)
-            if os.path.isdir(folder_path):
-                # ✅ 递归查找所有 .hea 文件
-                for root, _, files in os.walk(folder_path):
-                    for file in files:
-                        if file.endswith('.hea'):
-                            patient_id = file[:-4]  # 去掉 .hea
-                            self.patient_ids.append((root, patient_id))
+        # ✅ 递归查找所有 .hea 文件并筛选符合要求的数据
+        for root, _, files in os.walk(data_dir):
+            for file in files:
+                if file.endswith('.hea'):
+                    hea_path = os.path.join(root, file)
+                    source = None
+                    with open(hea_path, 'r') as f:
+                        for line in f:
+                            if '# Source:' in line:
+                                source = line.strip().split(':')[-1].strip()
+                                break
+                    if source in ['SaMi-Trop', 'PTB-XL']:
+                        patient_id = file[:-4]
+                        self.patient_ids.append((root, patient_id))
 
     def __len__(self):
         return len(self.patient_ids)

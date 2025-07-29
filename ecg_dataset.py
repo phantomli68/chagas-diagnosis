@@ -44,26 +44,29 @@ class ECGDataset(Dataset):
         folder_path, patient_id = self.patient_ids[index]
         hea_path = os.path.join(folder_path, patient_id + '.hea')
 
-        # 读取标签
+        # 读取标签 & 数据来源
         label = 0
+        source = None
         with open(hea_path, 'r') as f:
             for line in f:
                 if 'Chagas label:' in line:
                     label = 1 if 'True' in line else 0
-                    break
+                elif '# Source:' in line:
+                    source = line.strip().split(':')[-1].strip()
 
         # 读取 ECG 信号
         record_path = os.path.join(folder_path, patient_id)
         ecg_data, _ = wfdb.rdsamp(record_path)
 
-        # 数据截取与重采样
-        if patient_id.lower().startswith('p'):
+        # ✅ 根据 source 判断处理方式
+        if source == 'PTB-XL':
             ecg_data = ecg_data[-3500:, self.use_leads]
             ecg_data = resample(ecg_data, 2800, axis=0)
             nsteps = ecg_data.shape[0]
-        else:
+        elif source == 'SaMi-Trop':
             ecg_data = ecg_data[-2800:, self.use_leads]
             nsteps = ecg_data.shape[0]
+
 
         result = np.zeros((2800, self.nleads))
         ecg_data = sg_denoise(ecg_data, 13, 2)
